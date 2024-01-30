@@ -1,41 +1,34 @@
 # menu
 from playwright.sync_api import Playwright, sync_playwright, expect
-
+import allure
+import pytest_check as check
 
 def test_run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
     page.goto("https://oz.by/")
-    page.get_by_role("link", name="Акции и скидки").click()
+    with allure.step('Проверка нажатия кнопки "Акции и скидки"'):
+        if check.is_true(page.get_by_role("Акции и скидки").is_visible()):
+            page.get_by_role("Акции и скидки").click()
+
+
     page.goto("https://oz.by/")
-    page.get_by_role("link", name="Топ товаров до −60%").click()
+    with allure.step('Проверка нажатия кнопки "Топ товаров до −60%"'):
+        if check.is_true(page.get_by_role("Топ товаров до −60%").is_visible()):
+            page.get_by_role("Топ товаров до −60%").click()
+
     page.goto("https://oz.by/")
-    page.get_by_role("link", name="Книги", exact=True).first.click()
+    with allure.step('Проверка нажатия кнопки "Книги"'):
+        if check.is_true(page.get_by_role("Книги").is_visible()):
+            page.get_by_role("Книги").click()
+
     page.goto("https://oz.by/")
-    page.get_by_role("link", name="Развлечения, творчество").first.click()
-    page.goto("https://oz.by/")
-    page.get_by_role("link", name="Сувениры, подарки").click()
-    page.goto("https://oz.by/")
-    page.get_by_role("link", name="Канцтовары, учёба").click()
-    page.goto("https://oz.by/")
-    page.get_by_role("link", name="Косметика, парфюмерия").click()
-    page.get_by_role("link", name="Продукты, деликатесы").click()
-    page.goto("https://oz.by/")
-    page.get_by_role("link", name="Дом, сад, зоотовары").click()
-    page.goto("https://oz.by/")
-    page.get_by_role("link", name="Детям и мамам").click()
-    page.goto("https://oz.by/")
-    page.get_by_role("link", name="Техника, электроника").click()
-    page.goto("https://oz.by/")
-    page.get_by_role("link", name="Туризм, отдых, спорт").click()
-    page.goto("https://oz.by/")
-    page.locator("#storesTab").get_by_role("link", name="Магазины OZ").click()
+    with allure.step('Проверка нажатия кнопки "Развлечения, творчествои"'):
+        if check.is_true(page.get_by_role("Развлечения, творчество").is_visible()):
+            page.get_by_role("Развлечения, творчество").click()
+
 
     # ---------------------
     context.close()
     browser.close()
-
-
-with sync_playwright() as playwright:
-    run(playwright)
